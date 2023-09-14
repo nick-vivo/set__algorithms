@@ -15,8 +15,12 @@ target_link_libraries(node smart_pointers)
 #set
 add_subdirectory(modules/Pair)
 add_library(set include/node.h src/node.cpp)
-target_include_directories(set modules/Pair/include)
+target_include_directories(set PUBLIC modules/Pair/include)
 target_link_libraries(set node array)
+
+#main
+add_executable(main main.cpp)
+target_link_libraries(main set)
 
 #tesing
 option(TEST "Enable google tests" OFF)
