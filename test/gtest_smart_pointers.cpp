@@ -63,4 +63,12 @@ TEST(smart_pointers, All)
     MOOL->a = 4;
     ASSERT_EQ(MOOL->a, 4);
 
+    null = a;
+
+    ASSERT_TRUE(null == a);
+    ASSERT_FALSE(null == b);
+
+    ASSERT_TRUE(null != b);
+    ASSERT_FALSE(null != a);
+
 }

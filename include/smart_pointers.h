@@ -50,7 +50,7 @@ public:
         this->~shared_ptr();
     }
 
-    void reset(T* new_pointer)
+    void reset(T* new_pointer) noexcept
     {
         this->reset();
         this->_data = new_pointer;
@@ -59,19 +59,29 @@ public:
             this->_size = new uint(1);        
     }
 
-    uint use_count() const
+    uint use_count() const noexcept
     {
         return *this->_size;
     }
 
-    T& operator*()
+    T& operator*() noexcept
     {
         return *_data;
     }
 
-    T* operator->()
+    T* operator->() noexcept
     {
         return _data;
+    }
+
+    bool operator==(const shared_ptr<T>& other) const noexcept
+    {
+        return (this->_data == other._data);
+    }
+
+    bool operator!=(const shared_ptr<T>& other) const noexcept
+    {
+        return (this->_data != other._data);
     }
 
     shared_ptr<T>& operator=(const shared_ptr<T>& shared_pt)
