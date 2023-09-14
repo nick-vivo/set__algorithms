@@ -61,20 +61,10 @@ private:
 
 public:
 
-    // Array<T> get_array()
-    // {
-    //     Array<T> array(this->_size);
 
-    //     mstd::ptr< mstd::Node<T> > tmp = this->head;
-
-    //     for(t_size i = 0; i < this->_size; ++i)
-    //     {
-            
-    //     }
-
-    //     tmp = tmp->right();
-    // }
-
+private:
+    
 };
+
 
 #endif
