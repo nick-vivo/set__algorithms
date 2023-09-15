@@ -13,10 +13,10 @@ add_library(node include/node.h src/node.cpp)
 target_link_libraries(node smart_pointers)
 
 #set
-add_subdirectory(modules/Pair)
+add_subdirectory(modules/STL)
 add_library(set include/node.h src/node.cpp)
-target_include_directories(set PUBLIC modules/Pair/include)
-target_link_libraries(set node array)
+target_include_directories(set PUBLIC modules/STL/include)
+target_link_libraries(set node vector)
 
 #main
 add_executable(main main.cpp)
