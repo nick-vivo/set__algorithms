@@ -18,10 +18,6 @@ add_library(set include/node.h src/node.cpp)
 target_include_directories(set PUBLIC modules/STL/include)
 target_link_libraries(set node vector)
 
-#main
-add_executable(main main.cpp)
-target_link_libraries(main set)
-
 #tesing
 option(TEST "Enable google tests" OFF)
 
