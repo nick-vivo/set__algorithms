@@ -4,7 +4,13 @@
 #include <node.h>
 #include <vector.h>
 
+namespace mstd
+{
+
 using t_count = int;
+
+template<class T>
+using ptr = shared_ptr<T>;
 
 template<class T>
 class Set
@@ -143,4 +149,5 @@ t_count Set<T>::size()
     return this->_size;
 }
 
+}
 #endif

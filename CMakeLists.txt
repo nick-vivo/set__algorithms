@@ -4,12 +4,14 @@ project(set CXX)
 
 include_directories(include)
 
+add_subdirectory(modules/STL)
+
 #node
 add_library(node include/node.h src/node.cc)
+target_include_directories(node PUBLIC modules/STL/include)
 target_link_libraries(node memory)
 
 #set
-add_subdirectory(modules/STL)
 add_library(set include/set.h src/set.cc)
 target_include_directories(set PUBLIC modules/STL/include)
 target_link_libraries(set node vector)
