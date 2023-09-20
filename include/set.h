@@ -3,7 +3,7 @@
 
 #include <node.h>
 #include <vector.h>
-#include <exception.h>
+#include <tools.h>
 
 namespace mstd
 {
@@ -32,7 +32,19 @@ public:
 
     Set(Set<T>& other);
 
+private:
+
+    mstd::shared_ptr< int > _min = nullptr;
+    mstd::shared_ptr< int > _max = nullptr;
+    t_count _max_size;
+public:
+    Set(T min, T max, t_count max_size);
+
     virtual ~Set() {}
+
+
+
+    bool is_empty();
 
     void insert(T value);
 
@@ -68,6 +80,9 @@ public:
 //Вычисление пересечения двух множеств;
     Set<T> intersection(Set<T>& other);
 
+    void swap(Set<T>& other);
+
+public:
 //operators
 
 //Оператор [] для получения числа по его индексу
@@ -84,6 +99,7 @@ public:
     
     Set<T>& operator-=(T value);
 
+    Set<T>& operator=(Set<T>& other);
 };
 
 //Дополнительные операторы + и - с числом;
@@ -117,17 +133,6 @@ Set<T> operator-(Set<T>& set, T value)
     return copy;
 }
 
-template<class T>
-Set<T> operator-(T value, Set<T>& set)
-{
-    Set<T> copy(set);
-
-    copy.rm_value(value);
-
-    return copy;
-}
-
-
 //code
 
 template <class T>
@@ -156,9 +161,45 @@ Set<T>::Set(Set<T> &other): head(nullptr), _size(0)
     }
 }
 
+template<class T>
+Set<T>::Set(T min, T max, t_count max_size): _max_size(max_size)
+{
+    if (min > max)
+    {
+        mstd::swap(max, min);
+    }
+
+    if (max_size < 0)
+    {
+        throw mstd::exception("Your max size is a ....");
+    }
+
+    this->_max = mstd::shared_ptr<int>( new int(max) );
+    this->_min = mstd::shared_ptr<int>( new int(min) );
+}
+
+template<class T>
+bool Set<T>::is_empty()
+{
+    if (head == nullptr)
+    {
+        return true;
+    }
+    return false;
+}
+
 template <class T>
 void Set<T>::insert(T value)
 {
+
+    if ( this->_max )
+    {
+        if ( !(value <= this->_max.operator*() && value >= this->_min.operator*() && this->_size + 1 <= this->_max_size) )
+        {
+            throw mstd::exception("Your value is bad for range set");
+        }
+    }
+
     if (!head)
     {
         head = mstd::make_Node(value);
@@ -279,10 +320,22 @@ Set<T> Set<T>::intersection(Set<T> &other)
 {
     vector<T> vector_other = other.get_vector();
 
+    Set<T> tmp;
+
     for (t_count i = 0; i < vector_other.size(); ++i)
     {
-        this->rm_value(vector_other.at(i));
+        if(this->is_value(vector_other.at(i)))
+            tmp.insert(vector_other.at(i));
     }
+    
+    return tmp;
+}
+
+template <class T>
+void Set<T>::swap(Set<T> &other)
+{
+    mstd::swap(this->head, other.head);
+    mstd::swap(this->_size, other._size);
 }
 
 //operators
@@ -299,10 +352,14 @@ Set<T> Set<T>::operator+(Set<T> &other)
 {
     vector<T> vector_other = other.get_vector();
 
+    Set<T> tmp_sum(*this);
+
     for (t_count i = 0; i < vector_other.size(); ++i)
     {
-        this->insert(vector_other.at(i));
+        tmp_sum.insert(vector_other.at(i));
     }
+
+    return tmp_sum;
 }
 
 template <class T>
@@ -310,10 +367,14 @@ Set<T> Set<T>::operator-(Set<T> &other)
 {
     vector<T> vector_other = other.get_vector();
 
+    Set<T> tmp_sum(*this);
+
     for (t_count i = 0; i < vector_other.size(); ++i)
     {
-        this->rm_value(vector_other.at(i));
+        tmp_sum.rm_value(vector_other.at(i));
     }
+    
+    return tmp_sum;
 }
 
 template <class T>
@@ -331,5 +392,16 @@ Set<T>& Set<T>::operator-=(T value)
 
     return *this;
 }
+
+template<class T>
+Set<T>& Set<T>::operator=(Set<T> &other)
+{
+    Set<T> cp_other(other);
+
+    this->swap(cp_other);
+
+    return *this;
+}
+
 }
 #endif

@@ -14,10 +14,14 @@ target_link_libraries(node memory)
 #set
 add_library(set include/set.h src/set.cc)
 target_include_directories(set PUBLIC modules/STL/include)
-target_link_libraries(set node vector)
+target_link_libraries(set node vector tools exception)
 
 #tesing
 option(GTEST_SET "Enable google tests" OFF)
+
+#main.cpp
+add_executable(main main.cpp)
+target_link_libraries(main set)
 
 if(GTEST_SET)
 
