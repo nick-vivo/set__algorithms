@@ -30,4 +30,9 @@ if(GTEST_SET)
     target_include_directories(gtest_node PUBLIC include ${TEST_INCLUDE})
     target_link_libraries(gtest_node node ${TEST_LIBS})
 
+    #set
+    add_executable(gtest_set test/gtest_set.cpp)
+    target_include_directories(gtest_set PUBLIC include ${TEST_INCLUDE})
+    target_link_libraries(gtest_set set ${TEST_LIBS})
+
 endif()
