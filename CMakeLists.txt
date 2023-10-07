@@ -5,38 +5,30 @@ project(set CXX)
 include_directories(include)
 
 add_subdirectory(modules/STL)
+include_directories(modules/STL/include)
 
-#node
-add_library(node include/node.h src/node.cc)
-target_include_directories(node PUBLIC modules/STL/include)
-target_link_libraries(node memory)
 
-#set
-add_library(set include/set.h src/set.cc)
-target_include_directories(set PUBLIC modules/STL/include)
-target_link_libraries(set node vector tools exception)
+# #tesing
+# option(GTEST_SET "Enable google tests" OFF)
 
-#tesing
-option(GTEST_SET "Enable google tests" OFF)
+# #main.cpp
+# add_executable(main main.cpp)
+# target_link_libraries(main set)
 
-#main.cpp
-add_executable(main main.cpp)
-target_link_libraries(main set)
+# if(GTEST_SET)
 
-if(GTEST_SET)
+#     add_subdirectory(modules/googletest)
+#     set(TEST_LIBS gmock gmock_main gtest gtest_main)
+#     set(TEST_INCLUDE modules/googletest/googletest/include modules/googletest/googlemock/include)
 
-    add_subdirectory(modules/googletest)
-    set(TEST_LIBS gmock gmock_main gtest gtest_main)
-    set(TEST_INCLUDE modules/googletest/googletest/include modules/googletest/googlemock/include)
+#     #node
+#     add_executable(gtest_node test/gtest_node.cpp)
+#     target_include_directories(gtest_node PUBLIC include ${TEST_INCLUDE})
+#     target_link_libraries(gtest_node node ${TEST_LIBS})
 
-    #node
-    add_executable(gtest_node test/gtest_node.cpp)
-    target_include_directories(gtest_node PUBLIC include ${TEST_INCLUDE})
-    target_link_libraries(gtest_node node ${TEST_LIBS})
+#     #set
+#     add_executable(gtest_set test/gtest_set.cpp)
+#     target_include_directories(gtest_set PUBLIC include ${TEST_INCLUDE})
+#     target_link_libraries(gtest_set set ${TEST_LIBS})
 
-    #set
-    add_executable(gtest_set test/gtest_set.cpp)
-    target_include_directories(gtest_set PUBLIC include ${TEST_INCLUDE})
-    target_link_libraries(gtest_set set ${TEST_LIBS})
-
-endif()
+# endif()
