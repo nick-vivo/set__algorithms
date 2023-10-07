@@ -8,12 +8,22 @@ add_subdirectory(modules/STL)
 include_directories(modules/STL/include)
 
 
+set(SETHH_LIB include/set.hh src/set.cc)
+add_library(sethh ${SETHH_LIB})
+target_include_directories(sethh PUBLIC modules/STL/include)
+target_link_libraries(sethh set exception)
+
+
+#main.cpp
+add_executable(main main.cpp)
+target_include_directories(main PUBLIC modules/STL/include)
+target_link_libraries(main set)
+
+
+
 # #tesing
 # option(GTEST_SET "Enable google tests" OFF)
 
-# #main.cpp
-# add_executable(main main.cpp)
-# target_link_libraries(main set)
 
 # if(GTEST_SET)
 
